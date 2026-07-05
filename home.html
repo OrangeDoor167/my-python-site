@@ -1,0 +1,49 @@
+{% extends "base.html" %}{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-8 text-center">
+    <h1>Welcome to Dong's art</h1>
+    <p class="lead">Use the widgets above to navigate.</p>
+    {% if user.is_authenticated %}
+    <p class="lead">You are signed in as {{ user.email }}.</p>
+    {% if user.is_owner %}
+    <a class="btn btn-primary btn-lg m-2" href="{{ url_for('views.upload_photo') }}">Upload Photo</a>
+    {% endif %}
+    {% else %}
+    <a class="btn btn-primary btn-lg m-2" href="{{ url_for('auth.login') }}">Login</a>
+    <a class="btn btn-success btn-lg m-2" href="{{ url_for('auth.sign_up') }}">Sign Up</a>
+    {% endif %}
+  </div>
+</div>
+{% if uploads %}
+<div class="row justify-content-center mt-4">
+  <div class="col-md-10">
+    <h3 class="text-center">Uploaded Photos</h3>
+    <div class="row">
+      {% for photo in uploads %}
+      <div class="col-sm-6 col-md-4 mb-4">
+        <div class="card">
+          <img src="{{ photo.url }}" class="card-img-top" alt="Uploaded photo">
+          <div class="card-body text-center">
+            {% if photo.caption %}
+            <p class="card-text mb-3">{{ photo.caption }}</p>
+            {% endif %}
+            {% if user.is_owner %}
+            <form action="{{ url_for('views.update_caption', filename=photo.filename) }}" method="POST" class="mb-2">
+              <textarea name="caption" class="form-control form-control-sm mb-2" rows="2" placeholder="Add a note for this photo">{{ photo.caption }}</textarea>
+              <button type="submit" class="btn btn-sm btn-outline-primary">Save Note</button>
+            </form>
+            <form action="{{ url_for('views.delete_photo', filename=photo.filename) }}" method="POST" onsubmit="return confirm('Delete this photo?');">
+              <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

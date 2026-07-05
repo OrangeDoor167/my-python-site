@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Photo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-6">
+    <h2>Upload a Photo</h2>
+    <form method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="photo">Choose an image</label>
+        <input type="file" class="form-control-file" id="photo" name="photo" accept="image/*" required>
+      </div>
+      <div class="form-group mt-3">
+        <label for="caption">Caption (optional)</label>
+        <input type="text" class="form-control" id="caption" name="caption" maxlength="200" placeholder="Add text under this photo">
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">Upload</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
